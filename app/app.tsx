@@ -1,18 +1,26 @@
-class Square extends React.Component<None,None> {
+class Square extends React.Component<SquareProps, None> {
   render() {
     return (
-      <button className="square">
-        {/* TODO */}
+      <button className="square" onClick={() => this.props.onClick()}>
+        {this.props.value}
       </button>
     );
   }
 }
 
 interface None {}
+interface SquareProps {
+  value: string;
+  onClick: () => void
+}
 
-class Board extends React.Component<None,None> {
-  renderSquare(i: None) {
-    return <Square />;
+interface BoardState {
+  squares: (string | undefined)[]
+}
+
+class Board extends React.Component<None,BoardState> {
+  renderSquare(i: number) {
+    return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)}/>;
   }
   render() {
     const status = 'Next player: X';
@@ -36,6 +44,18 @@ class Board extends React.Component<None,None> {
         </div>
       </div>
     );
+  }
+  constructor() {
+    super();
+    this.state = {
+        squares: Array(9).fill(undefined)
+    }
+  }
+  handleClick(i: number) {
+    //const squares = this.state.squares.slice(); // copies the array
+    const squares = [...this.state.squares]; // copies the array
+    squares[i] = 'X';
+    this.setState({squares});
   }
 }
 
