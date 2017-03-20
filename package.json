@@ -1,0 +1,26 @@
+{
+  "name": "react-tictactoe-tutorial",
+  "version": "0.1.0",
+  "description": "Following along with tutorial at https://facebook.github.io/react/tutorial/tutorial.html",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "node node_modules/typescript/lib/tsc -p . -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/hapi": "^16.0.0",
+    "@types/inert": "^4.0.0",
+    "@types/react": "^15.0.16",
+    "@types/react-dom": "^0.14.23",
+    "typescript": "^2.2.1"
+  },
+  "dependencies": {
+    "hapi": "^14.1.0",
+    "inert": "^4.0.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
