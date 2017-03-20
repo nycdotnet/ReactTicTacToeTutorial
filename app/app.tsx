@@ -1,12 +1,3 @@
-/*class Square extends React.Component<SquareProps, None> {
-  render() {
-    return (
-      <button className="square" onClick={() => this.props.onClick()}>
-        {this.props.value}
-      </button>
-    );
-  }
-}*/
 
 const Square = (props: SquareProps) => {
   return (
@@ -18,12 +9,13 @@ const Square = (props: SquareProps) => {
 
 interface None {}
 interface SquareProps {
-  value: string;
+  value: string | undefined;
   onClick: () => void
 }
 
 interface BoardState {
-  squares: (string | undefined)[]
+  squares: (string | undefined)[],
+  xIsNext: boolean;
 }
 
 class Board extends React.Component<None,BoardState> {
@@ -31,7 +23,14 @@ class Board extends React.Component<None,BoardState> {
     return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)}/>;
   }
   render() {
-    const status = 'Next player: X';
+    let status; 
+    const winner = calculateWinner(this.state.squares);
+    if (winner) {
+      status = `Winner: ${winner}.`
+    } else {
+      status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
+    }
+
     return (
       <div>
         <div className="status">{status}</div>
@@ -56,14 +55,21 @@ class Board extends React.Component<None,BoardState> {
   constructor() {
     super();
     this.state = {
-        squares: Array(9).fill(undefined)
+        squares: Array(9).fill(undefined),
+        xIsNext: true
     }
   }
   handleClick(i: number) {
     //const squares = this.state.squares.slice(); // copies the array
     const squares = [...this.state.squares]; // copies the array
-    squares[i] = 'X';
-    this.setState({squares});
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares,
+      xIsNext: !this.state.xIsNext
+    });
   }
 }
 
@@ -90,7 +96,7 @@ ReactDOM.render(
   document.getElementById('container')
 );
 
-function calculateWinner(squares: None[]) {
+function calculateWinner(squares: (string | undefined)[]) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
